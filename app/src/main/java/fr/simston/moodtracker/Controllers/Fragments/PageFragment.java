@@ -1,12 +1,14 @@
 package fr.simston.moodtracker.Controllers.Fragments;
 
+import android.annotation.SuppressLint;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import fr.simston.moodtracker.R;
 
@@ -17,7 +19,6 @@ import fr.simston.moodtracker.R;
  */
 
 public class PageFragment extends Fragment {
-    private static final float MIN_SCALE = 0.75f;
 
     // 1 - Create keys for our Bundle
     public static final String KEY_POSITION = "position";
@@ -51,15 +52,17 @@ public class PageFragment extends Fragment {
         View result = inflater.inflate(R.layout.fragment_page, container, false);
 
         // 4 - Get widgets from layout and serialise it
-        LinearLayout rootView = (LinearLayout) result.findViewById(R.id.fragment_page_rootview);
-        TextView textView = (TextView) result.findViewById(R.id.fragment_page_title);
+        LinearLayout rootView = result.findViewById(R.id.fragment_page_rootview);
+        ImageView imageView = result.findViewById(R.id.fragment_page_smiley_img);
 
         // 5 - Get data from Bundle (created in method newInstance
         int position = getArguments().getInt(KEY_POSITION, -1);
         int color = getArguments().getInt(KEY_COLOR, -1);
 
         rootView.setBackgroundColor(color);
-        textView.setText("Page numéro " + position);
+
+        @SuppressLint("Recycle") TypedArray imgs = getResources().obtainTypedArray(R.array.smileys_array);
+        imageView.setImageResource(imgs.getResourceId(position,-1));
 
         return  result;
     }
