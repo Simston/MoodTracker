@@ -1,6 +1,5 @@
 package fr.simston.moodtracker.Controllers.Fragments;
 
-import android.annotation.SuppressLint;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -52,16 +51,15 @@ public class PageFragment extends Fragment {
         View result = inflater.inflate(R.layout.fragment_page, container, false);
 
         // 4 - Get widgets from layout and serialise it
-        LinearLayout rootView = result.findViewById(R.id.fragment_page_rootview);
+        LinearLayout rootView = (LinearLayout) result.findViewById(R.id.fragment_page_rootview);
         ImageView imageView = result.findViewById(R.id.fragment_page_smiley_img);
 
         // 5 - Get data from Bundle (created in method newInstance
         int position = getArguments().getInt(KEY_POSITION, -1);
         int color = getArguments().getInt(KEY_COLOR, -1);
-
         rootView.setBackgroundColor(color);
 
-        @SuppressLint("Recycle") TypedArray imgs = getResources().obtainTypedArray(R.array.smileys_array);
+        TypedArray imgs = getResources().obtainTypedArray(R.array.smileys_array);
         imageView.setImageResource(imgs.getResourceId(position,-1));
 
         return  result;

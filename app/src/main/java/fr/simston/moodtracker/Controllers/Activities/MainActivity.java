@@ -1,12 +1,12 @@
 package fr.simston.moodtracker.Controllers.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +23,7 @@ import static android.support.v4.view.ViewPager.OnPageChangeListener;
 
 public class MainActivity extends AppCompatActivity {
 
+        private SharedPreferences preferences;
         private int lastKnownPosition;
         Date date = new Date();
 
@@ -37,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("TimeZone   "+tz.getDisplayName(false, TimeZone.SHORT)+" Timezon id :: " +tz.getID());
 
             LocalTime midnight = LocalTime.MIDNIGHT;
+
             LocalDateTime todayT= LocalDateTime.now(ZoneId.of(tz.getID()));
+
             LocalDate today = LocalDate.now(ZoneId.of("Europe/Paris"));
             LocalDateTime todayMidnight = LocalDateTime.of(today, midnight);
             LocalDateTime tomorrowMidnight = todayMidnight.plusDays(1);
@@ -48,17 +51,17 @@ public class MainActivity extends AppCompatActivity {
             //}
 
             configureViewPage();
+            // Instance of SharedPreferences
+            preferences = getPreferences(MODE_PRIVATE);
 
         }
 
     private void configureViewPage(){
         // 1 - Get ViewPager from layout
-        ViewPager pager = (ViewPager) findViewById(R.id.activity_main_viewpager);
-
+        ViewPager pager = findViewById(R.id.activity_main_viewpager);
         pager.setAdapter(new PageAdapter(getSupportFragmentManager(), getResources().getIntArray(R.array.colorsPagesViewPager)));
         onPageChangeListener(pager);
-        // init Page l
-        pager.setCurrentItem(lastKnownPosition);
+        loadSaveDataInUi(pager);
     }
 
     // Add Listener for ViewPager
@@ -72,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
             // Add action on ViewPager when page is selected
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(MainActivity.this, " Hey "+ position, Toast.LENGTH_SHORT).show();
+
+                // Save position of ViewPager
                 switch (position) {
                     case 0:
                         lastKnownPosition = position;
@@ -91,6 +95,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Save the position of current View Fragment when activity is destroyed
+        preferences.edit().putInt("lastKnownPosition", lastKnownPosition).apply();
+    }
+
+    /**
+     * Method of refreshing the interface, data backup
+     * @param pager ViewPager
+     */
+    private void loadSaveDataInUi(ViewPager pager){
+        lastKnownPosition = getPreferences(MODE_PRIVATE).getInt("lastKnownPosition", lastKnownPosition);
+        pager.setCurrentItem(lastKnownPosition);
 
     }
 

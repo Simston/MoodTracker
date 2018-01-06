@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class VerticalViewPager extends ViewPager {
-    // private static final float MIN_SCALE = 0.75f;
+     private static final float MIN_SCALE = 0.75f;
 
     public VerticalViewPager(Context context) {
         this(context, null);
@@ -73,7 +73,7 @@ public class VerticalViewPager extends ViewPager {
                 view.setAlpha(1);
                 view.setTranslationX(pageWidth * -position);
 
-                /* Test for animation transition
+                /*Test for animation transition
                 // Scale the page down (between MIN_SCALE and 1)
                 float scaleFactor = MIN_SCALE
                         + (1 - MIN_SCALE) * (1 - Math.abs(position));
