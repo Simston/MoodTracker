@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // init information TimeZone of device
+        TimeZone tz = TimeZone.getDefault();
+        // System.out.println("TimeZone   " + tz.getDisplayName(false, TimeZone.SHORT) + " Timezon id :: " + tz.getID());
+
         // init current date
         date = Calendar.getInstance().getTime();
         calendar = Calendar.getInstance(TimeZone.getDefault());
@@ -52,18 +56,12 @@ public class MainActivity extends AppCompatActivity {
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         currentMonth = calendar.get(Calendar.MONTH);
         currentMonth = currentMonth + 1;
-
         Log.e("Current date", String.valueOf(date));
 
         // Instance of SharedPreferences
         preferences = this.getSharedPreferences("shared preferences", MODE_PRIVATE);
 
         loadMoodOfSharedPreferences();
-
-        // init information TimeZone of device
-        TimeZone tz = TimeZone.getDefault();
-        System.out.println("TimeZone   " + tz.getDisplayName(false, TimeZone.SHORT) + " Timezon id :: " + tz.getID());
-
         configureViewPage();
     }
 
@@ -71,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         // 1 - Get ViewPager from layout
         ViewPager pager = findViewById(R.id.activity_main_viewpager);
         pager.setAdapter(new PageAdapter(getSupportFragmentManager(), getResources().getIntArray(R.array.colorsPagesViewPager)));
-
         // 2 - Initialize position of ViewPager with position shared/
         loadSaveDataInUi(pager);
         // 3 - Attach on page change listener with current pager
@@ -204,21 +201,18 @@ public class MainActivity extends AppCompatActivity {
             this.lastKnownPosition = lastKnownMoodDay.getPositionOfMood();
         }
 
-        Log.e("LastKnowPosition", String.valueOf(lastKnownPosition));
-        //if a new Day position of ViewPager is 0
-        if(dayOfLastKnownMoodDay != currentDay){
-            dayOfLastKnownMoodDay = currentDay;
-            this.lastKnownPosition = 0;
-        }
-        Log.e("LastKnowPosition If ND", String.valueOf(lastKnownPosition));
-
-
         // Replace current mood by lastKnownMoodDay if same day and month
         if (dayOfLastKnownMoodDay == currentDay && monthOfLastKnownMoodDay == currentMonth) {
             this.moodOfDay = lastKnownMoodDay;
         }
         Log.e("Info Last Mood", String.valueOf("La date est " + dateOfLastKnownMoodDay + " jour " +
                 dayOfLastKnownMoodDay + " month " + monthOfLastKnownMoodDay + " position pager " + lastKnownPosition));
+
+        //if a new Day position of ViewPager is 0 and change the day of variable dayOfLastKnownMoodDay.
+        if(dayOfLastKnownMoodDay != currentDay){
+            dayOfLastKnownMoodDay = currentDay;
+            this.lastKnownPosition = 0;
+        }
     }
 
     @Override
