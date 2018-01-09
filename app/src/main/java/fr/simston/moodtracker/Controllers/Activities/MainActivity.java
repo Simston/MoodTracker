@@ -24,27 +24,26 @@ import static android.support.v4.view.ViewPager.OnPageChangeListener;
 public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences preferences;
-    private int lastKnownPosition;
-    private int currentDay;
-    private int currentMonth;
+
     private Date date;
     private Calendar calendar;
 
+    private MoodStock lastKnownMoodDay;
+    private int dayOfLastKnownMoodDay;
+    private int monthOfLastKnownMoodDay;
+    private Date dateOfLastKnownMoodDay;
+    private int lastKnownPosition;
+
     private MoodStock moodOfDay;
+    private int currentDay;
+    private int currentMonth;
+
     private ArrayList<MoodStock> mMoodStockArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        loadMoodOfSharedPreferences();
-        // Instance of SharedPreferences
-        preferences = this.getSharedPreferences("shared preferences", MODE_PRIVATE);
-
-        // init information TimeZone of device
-        TimeZone tz = TimeZone.getDefault();
-        System.out.println("TimeZone   " + tz.getDisplayName(false, TimeZone.SHORT) + " Timezon id :: " + tz.getID());
 
         // init current date
         date = Calendar.getInstance().getTime();
@@ -55,20 +54,28 @@ public class MainActivity extends AppCompatActivity {
         currentMonth = currentMonth + 1;
 
         Log.e("Current date", String.valueOf(date));
-        Log.e("Current day", String.valueOf(currentDay));
-        Log.e("Current month", String.valueOf(currentMonth));
-        configureViewPage();
 
+        // Instance of SharedPreferences
+        preferences = this.getSharedPreferences("shared preferences", MODE_PRIVATE);
+
+        loadMoodOfSharedPreferences();
+
+        // init information TimeZone of device
+        TimeZone tz = TimeZone.getDefault();
+        System.out.println("TimeZone   " + tz.getDisplayName(false, TimeZone.SHORT) + " Timezon id :: " + tz.getID());
+
+        configureViewPage();
     }
 
     private void configureViewPage() {
         // 1 - Get ViewPager from layout
         ViewPager pager = findViewById(R.id.activity_main_viewpager);
         pager.setAdapter(new PageAdapter(getSupportFragmentManager(), getResources().getIntArray(R.array.colorsPagesViewPager)));
-        // 2 - Attach on page change listener with current pager
-        onPageChangeListener(pager);
-        // 3 - Retrieve data from shared preferences
+
+        // 2 - Initialize position of ViewPager with position shared/
         loadSaveDataInUi(pager);
+        // 3 - Attach on page change listener with current pager
+        onPageChangeListener(pager);
     }
 
     /**
@@ -78,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loadSaveDataInUi(ViewPager pager) {
         // initializing lastKnownPosition with the stored data
-        lastKnownPosition = getSharedPreferences("shared preferences",MODE_PRIVATE).getInt("lastKnownPosition", lastKnownPosition);
         // set the pager at last know position
         pager.setCurrentItem(lastKnownPosition);
 
@@ -89,45 +95,32 @@ public class MainActivity extends AppCompatActivity {
         pager.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             // Add action on ViewPager when page is selected
             @Override
             public void onPageSelected(int position) {
-
                 // Save position of ViewPager
                 switch (position) {
                     case 0:
                         lastKnownPosition = position;
-                        //saveMoodOfDay(position);
-                        saveMoodOfDay(position);
                         break;
                     case 1:
                         lastKnownPosition = position;
-                        saveMoodOfDay(position);
 
-                        //saveMoodOfDay(position);
                         break;
                     case 2:
                         lastKnownPosition = position;
-                        saveMoodOfDay(position);
 
-                        //saveMoodOfDay(position);
                         break;
-
                     case 3:
                         lastKnownPosition = position;
-                        saveMoodOfDay(position);
 
-                        //saveMoodOfDay(position);
                         break;
-
                     case 4:
                         lastKnownPosition = position;
-                        saveMoodOfDay(position);
+
                         Log.e("TABLEAU", "My tab" + mMoodStockArrayList);
-                        //saveMoodOfDay(position);
                         break;
                 }
             }
@@ -140,57 +133,121 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveMoodOfDay(int position) {
-        moodOfDay = new MoodStock(currentDay, currentMonth, position, date);
+        // Storing the new Mood if day is different of mood in storage
+        if (dayOfLastKnownMoodDay != currentDay) {
+            moodOfDay = new MoodStock(currentDay, currentMonth, position, date);
 
-        // Storing the mood of the day in arraylist for 7 last mood storage.
-        // TO DO create here the function for compare Mood with new day if new day stock the current mood.
-        if(mMoodStockArrayList.size()-1 == 6){
-            mMoodStockArrayList.remove(0);
-            mMoodStockArrayList.add(6,moodOfDay);
-        }else{
-            mMoodStockArrayList.add(moodOfDay);
+            // Replace dayOfLastKnowMoodDay by new current Day
+            dayOfLastKnownMoodDay = currentDay;
+
+            // Storing the mood of the day in arraylist for 7 last mood storage.
+            if (mMoodStockArrayList.size() - 1 == 6) {
+                mMoodStockArrayList.remove(0);
+                mMoodStockArrayList.add(6, moodOfDay);
+            } else {
+                mMoodStockArrayList.add(moodOfDay);
+            }
+            // If same day just update the position and date
+        } else {
+            moodOfDay.setPositionOfMood(position);
+            moodOfDay.setDate(date);
         }
-
         Log.e("Test", String.valueOf(position));
         Log.e("Object", String.valueOf(moodOfDay));
+
+        // Save the new object Json in SharedPreferences
         SharedPreferences.Editor editor = preferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(mMoodStockArrayList);
         editor.putString("mood_list", json);
         editor.apply();
-
     }
 
     private void loadMoodOfSharedPreferences() {
+        // Recover ArrayList from SharedPreferences
         preferences = this.getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = preferences.getString("mood_list", null);
         Type type = new TypeToken<ArrayList<MoodStock>>() {
         }.getType();
         mMoodStockArrayList = gson.fromJson(json, type);
+
+        // Initialize a first object and create an empty ArrayList if doesn't exist
         if (mMoodStockArrayList == null) {
+            moodOfDay = new MoodStock(currentDay, currentMonth, 0, date);
             mMoodStockArrayList = new ArrayList<>();
+            saveMoodOfDay(0);
         }
-        for (MoodStock object : mMoodStockArrayList
-                ) {
-            Log.e("Objectz", String.valueOf(object));
-            Log.e("position", String.valueOf(object.getPositionOfMood()));
+
+        // Loop for read all object in ArrayList mMoodStockArrayList
+        for (MoodStock object : mMoodStockArrayList) {
+            Log.e("Object In Array", String.valueOf(object));
+            Log.e("Position Pager", String.valueOf(object.getPositionOfMood()));
+
         }
+
+        compareLastKnownMoodDayWithCurrentMood();
+
+    }
+
+    /**
+     * Method for compare the current Mood with the last Mood in storage
+     */
+    private void compareLastKnownMoodDayWithCurrentMood() {
+        // Recover the last object in ArrayList mMoodStockArrayList
+        if (mMoodStockArrayList != null && !mMoodStockArrayList.isEmpty()) {
+            this.lastKnownMoodDay = mMoodStockArrayList.get(mMoodStockArrayList.size() - 1);
+            // Recover all Data in object
+            this.dayOfLastKnownMoodDay = lastKnownMoodDay.getDay();
+            this.monthOfLastKnownMoodDay = lastKnownMoodDay.getMonth();
+            this.dateOfLastKnownMoodDay = lastKnownMoodDay.getDate();
+            this.lastKnownPosition = lastKnownMoodDay.getPositionOfMood();
+        }
+
+        Log.e("LastKnowPosition", String.valueOf(lastKnownPosition));
+        //if a new Day position of ViewPager is 0
+        if(dayOfLastKnownMoodDay != currentDay){
+            dayOfLastKnownMoodDay = currentDay;
+            this.lastKnownPosition = 0;
+        }
+        Log.e("LastKnowPosition If ND", String.valueOf(lastKnownPosition));
+
+
+        // Replace current mood by lastKnownMoodDay if same day and month
+        if (dayOfLastKnownMoodDay == currentDay && monthOfLastKnownMoodDay == currentMonth) {
+            this.moodOfDay = lastKnownMoodDay;
+        }
+        Log.e("Info Last Mood", String.valueOf("La date est " + dateOfLastKnownMoodDay + " jour " +
+                dayOfLastKnownMoodDay + " month " + monthOfLastKnownMoodDay + " position pager " + lastKnownPosition));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // Save the position of current View Fragment when activity is onPause()
-        preferences.edit().putInt("lastKnownPosition", lastKnownPosition).apply();
+        saveMoodOfDay(lastKnownPosition);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("On Stop", "On Stop");
+        saveMoodOfDay(lastKnownPosition);
+    }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        loadMoodOfSharedPreferences();
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadMoodOfSharedPreferences();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Save the position of current View Fragment when activity is onDestroy()
-        preferences.edit().putInt("lastKnownPosition", lastKnownPosition).apply();
 
     }
 

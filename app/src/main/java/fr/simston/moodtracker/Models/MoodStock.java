@@ -10,17 +10,19 @@ import java.util.Date;
 
 public class MoodStock {
 
-
-
-    private final Date date;
+    private Date date;
     private int day;
     private int month;
     private int positionOfMood;
 
-    public MoodStock(int day, int month, int positionOfMood, Date date){
+    public MoodStock(int day, int month, int positionOfMood, Date date) {
         this.day = day;
         this.month = month;
         this.positionOfMood = positionOfMood;
+        this.date = date;
+    }
+
+    public void setDate(Date date) {
         this.date = date;
     }
 
