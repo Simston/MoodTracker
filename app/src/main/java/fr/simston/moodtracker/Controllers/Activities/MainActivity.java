@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -16,12 +17,13 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import fr.simston.moodtracker.Adapters.PageAdapter;
+import fr.simston.moodtracker.Controllers.Fragments.PageFragment;
 import fr.simston.moodtracker.Models.MoodStock;
 import fr.simston.moodtracker.R;
 
 import static android.support.v4.view.ViewPager.OnPageChangeListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PageFragment.OnButtonClickedListener {
 
     private SharedPreferences preferences;
 
@@ -265,4 +267,8 @@ public class MainActivity extends AppCompatActivity {
         return calendar.getTime();
     }
 
+    @Override
+    public void onButtonClicked(View view) {
+
+    }
 }
