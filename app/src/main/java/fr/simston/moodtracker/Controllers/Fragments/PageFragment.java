@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import fr.simston.moodtracker.R;
 
@@ -51,7 +51,7 @@ public class PageFragment extends Fragment {
         View result = inflater.inflate(R.layout.fragment_page, container, false);
 
         // 4 - Get widgets from layout and serialise it
-        LinearLayout rootView = (LinearLayout) result.findViewById(R.id.fragment_page_rootview);
+        RelativeLayout rootView = (RelativeLayout) result.findViewById(R.id.fragment_page_rootview);
         ImageView imageView = result.findViewById(R.id.fragment_page_smiley_img);
 
         // 5 - Get data from Bundle (created in method newInstance
