@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class VerticalViewPager extends ViewPager {
-     private static final float MIN_SCALE = 0.75f;
+    //private static final float MIN_SCALE = 0.75f;
 
     public VerticalViewPager(Context context) {
         this(context, null);
