@@ -1,11 +1,15 @@
 package fr.simston.moodtracker.Controllers.Activities;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
     private MoodStock moodOfDay;
     private int currentDay;
     private int currentMonth;
+    private String commentMessage;
 
     private ArrayList<MoodStock> mMoodStockArrayList;
 
@@ -134,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
     private void saveMoodOfDay(int position) {
         // Storing the new Mood if day is different of mood in storage
         if (dayOfLastKnownMoodDay != currentDay) {
-            moodOfDay = new MoodStock(currentDay, currentMonth, position, date);
+            moodOfDay = new MoodStock(currentDay, currentMonth, position, date, commentMessage);
 
             // Replace dayOfLastKnowMoodDay by new current Day
             dayOfLastKnownMoodDay = currentDay;
@@ -173,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
 
         // Initialize a first object and create an empty ArrayList if doesn't exist
         if (mMoodStockArrayList == null) {
-            moodOfDay = new MoodStock(currentDay, currentMonth, 0, date);
+            moodOfDay = new MoodStock(currentDay, currentMonth, 0, date, commentMessage);
             mMoodStockArrayList = new ArrayList<>();
             saveMoodOfDay(0);
         }
@@ -211,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                 dayOfLastKnownMoodDay + " month " + monthOfLastKnownMoodDay + " position pager " + lastKnownPosition));
 
         //if a new Day position of ViewPager is 0 and change the day of variable dayOfLastKnownMoodDay.
-        if(dayOfLastKnownMoodDay != currentDay){
+        if (dayOfLastKnownMoodDay != currentDay) {
             dayOfLastKnownMoodDay = currentDay;
             this.lastKnownPosition = 0;
         }
@@ -222,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         super.onPause();
         saveMoodOfDay(lastKnownPosition);
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -235,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         loadMoodOfSharedPreferences();
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -269,6 +276,39 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
 
     @Override
     public void onButtonClicked(View view) {
+        switch (view.getId()) {
+            case R.id.imageBtnComment:
+                alertCommentAndSaveIt();
+                break;
+            case R.id.imgBtnHistory:
+                Toast.makeText(this, "History!", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
+    }
 
+    // Manage Button Comment
+    private void alertCommentAndSaveIt() {
+        final EditText txtComment = new EditText(this);
+        final AlertDialog.Builder alertComment = new AlertDialog.Builder(this);
+        alertComment.setTitle("Commentaire")
+                .setCancelable(false)
+                .setView(txtComment)
+                .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(MainActivity.this, "Cancel", Toast.LENGTH_LONG).show();
+
+                    }
+                })
+                .setPositiveButton("Valider", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        commentMessage = txtComment.getText().toString();
+                        moodOfDay.setCommentMessage(commentMessage);
+                        Toast.makeText(MainActivity.this, moodOfDay.getCommentMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }).create().show();
     }
 }

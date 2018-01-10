@@ -10,16 +10,26 @@ import java.util.Date;
 
 public class MoodStock {
 
-    private Date date;
     private int day;
     private int month;
     private int positionOfMood;
+    private Date date;
+    private String commentMessage;
 
-    public MoodStock(int day, int month, int positionOfMood, Date date) {
+    public MoodStock(int day, int month, int positionOfMood, Date date, String commentMessage) {
         this.day = day;
         this.month = month;
         this.positionOfMood = positionOfMood;
         this.date = date;
+        this.commentMessage = commentMessage;
+    }
+
+    public String getCommentMessage() {
+        return commentMessage;
+    }
+
+    public void setCommentMessage(String commentMessage) {
+        this.commentMessage = commentMessage;
     }
 
     public void setDate(Date date) {

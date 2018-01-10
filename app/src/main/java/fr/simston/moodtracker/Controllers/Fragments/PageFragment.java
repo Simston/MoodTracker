@@ -34,7 +34,7 @@ public class PageFragment extends Fragment implements View.OnClickListener{
 
     // 1 - Declare our interface that will be implemented by container activity
     public interface OnButtonClickedListener {
-        public void onButtonClicked(View view);
+        void onButtonClicked(View view);
     }
 
     // 2 - Method that will create a new instance of PageFragment, and add data to its bundle.
