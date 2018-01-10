@@ -81,20 +81,36 @@ public class HistoricalActivity extends AppCompatActivity {
         }
         int width = size.x;
 
+        LinearLayout.LayoutParams lp;
 
         if(positionOfMood == 0){
+            width = width - (width*70/100);
             layout.setBackgroundColor(getResources().getColor(R.color.faded_red));
             Log.e("width", String.valueOf(width));
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width/5,
-                    0); // or set height to any fixed value you want
+            lp = new LinearLayout.LayoutParams(width,0);
             lp.weight =1;
             layout.setLayoutParams(lp);
         }else if(positionOfMood == 1){
+            width = width - (width*60/100);
             layout.setBackgroundColor(getResources().getColor(R.color.warm_grey));
+            lp = new LinearLayout.LayoutParams(width,0);
+            lp.weight =1;
+            layout.setLayoutParams(lp);
+
         }else if(positionOfMood == 2){
+            width = width - (width*40/100);
             layout.setBackgroundColor(getResources().getColor(R.color.cornflower_blue_65));
+            lp = new LinearLayout.LayoutParams(width,0);
+            lp.weight =1;
+            layout.setLayoutParams(lp);
+
         }else if(positionOfMood == 3){
+            width = width - (width*20/100);
             layout.setBackgroundColor(getResources().getColor(R.color.light_sage));
+            lp = new LinearLayout.LayoutParams(width,0);
+            lp.weight =1;
+            layout.setLayoutParams(lp);
+
         }else if(positionOfMood == 4){
             layout.setBackgroundColor(getResources().getColor(R.color.banana_yellow));
         }
