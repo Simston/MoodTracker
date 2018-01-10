@@ -1,6 +1,7 @@
 package fr.simston.moodtracker.Controllers.Activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
     private int currentMonth;
     private String commentMessage;
 
-    private ArrayList<MoodStock> mMoodStockArrayList;
+    public static ArrayList<MoodStock> mMoodStockArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,7 +235,8 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                 alertCommentAndSaveIt();
                 break;
             case R.id.imgBtnHistory:
-                Toast.makeText(this, "History!", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(MainActivity.this, HistoricalActivity.class);
+                this.startActivity(i);
                 break;
             default:
                 break;
@@ -266,6 +268,12 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                         moodOfDay.setCommentMessage(commentMessage);
                     }
                 }).create().show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveMoodOfDay(lastKnownPosition);
     }
 
     @Override
