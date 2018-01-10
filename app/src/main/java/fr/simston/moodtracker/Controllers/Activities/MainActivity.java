@@ -178,17 +178,11 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
 
         // Initialize a first object and create an empty ArrayList if doesn't exist
         if (mMoodStockArrayList == null) {
-            moodOfDay = new MoodStock(currentDay, currentMonth, 0, date, commentMessage);
+            //moodOfDay = new MoodStock(currentDay, currentMonth, 0, date, commentMessage);
             mMoodStockArrayList = new ArrayList<>();
             saveMoodOfDay(0);
         }
 
-        // Loop for read all object in ArrayList mMoodStockArrayList
-        for (MoodStock object : mMoodStockArrayList) {
-            Log.e("Object In Array", String.valueOf(object));
-            Log.e("Position Pager", String.valueOf(object.getPositionOfMood()));
-
-        }
 
         compareLastKnownMoodDayWithCurrentMood();
 
@@ -206,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             this.monthOfLastKnownMoodDay = lastKnownMoodDay.getMonth();
             this.dateOfLastKnownMoodDay = lastKnownMoodDay.getDate();
             this.lastKnownPosition = lastKnownMoodDay.getPositionOfMood();
+            this.commentMessage = lastKnownMoodDay.getCommentMessage();
         }
 
         // Replace current mood by lastKnownMoodDay if same day and month
@@ -213,19 +208,64 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             this.moodOfDay = lastKnownMoodDay;
         }
         Log.e("Info Last Mood", String.valueOf("La date est " + dateOfLastKnownMoodDay + " jour " +
-                dayOfLastKnownMoodDay + " month " + monthOfLastKnownMoodDay + " position pager " + lastKnownPosition));
+                dayOfLastKnownMoodDay + " month " + monthOfLastKnownMoodDay + " position pager " + lastKnownPosition +
+                " Comment " + commentMessage));
 
         //if a new Day position of ViewPager is 0 and change the day of variable dayOfLastKnownMoodDay.
         if (dayOfLastKnownMoodDay != currentDay) {
             dayOfLastKnownMoodDay = currentDay;
             this.lastKnownPosition = 0;
         }
+
+        // Loop for read all object in ArrayList mMoodStockArrayList
+        for (MoodStock object : mMoodStockArrayList) {
+            Log.e("Object In Array", String.valueOf(object));
+            Log.e("Position Pager", String.valueOf(object.getPositionOfMood()));
+            Log.e("Day", String.valueOf(object.getDay()));
+
+
+        }
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        saveMoodOfDay(lastKnownPosition);
+    public void onButtonClicked(View view) {
+        switch (view.getId()) {
+            case R.id.imageBtnComment:
+                alertCommentAndSaveIt();
+                break;
+            case R.id.imgBtnHistory:
+                Toast.makeText(this, "History!", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Manage Button Comment
+    private void alertCommentAndSaveIt() {
+
+        // Create an AlertDialog with an EditText
+        final EditText txtComment = new EditText(this);
+        final AlertDialog.Builder alertComment = new AlertDialog.Builder(this);
+        alertComment.setTitle("Commentaire")
+                .setCancelable(false)
+                .setView(txtComment)
+                .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(MainActivity.this, "Cancel", Toast.LENGTH_LONG).show();
+
+                    }
+                })
+                .setPositiveButton("Valider", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        // Save the comment string in current Mood
+                        commentMessage = txtComment.getText().toString();
+                        moodOfDay.setCommentMessage(commentMessage);
+                    }
+                }).create().show();
     }
 
     @Override
@@ -238,14 +278,12 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
     @Override
     protected void onRestart() {
         super.onRestart();
-        loadMoodOfSharedPreferences();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadMoodOfSharedPreferences();
     }
 
     @Override
@@ -272,43 +310,5 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
-    }
-
-    @Override
-    public void onButtonClicked(View view) {
-        switch (view.getId()) {
-            case R.id.imageBtnComment:
-                alertCommentAndSaveIt();
-                break;
-            case R.id.imgBtnHistory:
-                Toast.makeText(this, "History!", Toast.LENGTH_LONG).show();
-                break;
-            default:
-                break;
-        }
-    }
-
-    // Manage Button Comment
-    private void alertCommentAndSaveIt() {
-        final EditText txtComment = new EditText(this);
-        final AlertDialog.Builder alertComment = new AlertDialog.Builder(this);
-        alertComment.setTitle("Commentaire")
-                .setCancelable(false)
-                .setView(txtComment)
-                .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(MainActivity.this, "Cancel", Toast.LENGTH_LONG).show();
-
-                    }
-                })
-                .setPositiveButton("Valider", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        commentMessage = txtComment.getText().toString();
-                        moodOfDay.setCommentMessage(commentMessage);
-                        Toast.makeText(MainActivity.this, moodOfDay.getCommentMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }).create().show();
     }
 }
