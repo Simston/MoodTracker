@@ -3,7 +3,6 @@ package fr.simston.moodtracker.Controllers.Activities;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.widget.LinearLayout;
 
@@ -70,8 +69,14 @@ public class HistoricalActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to change the appearance of LinearLayout according to stored moods
+     * @param layout LinearLayout
+     * @param positionOfMood int
+     */
     private void modifParamOfLinearLayout(LinearLayout layout, int positionOfMood){
 
+        // Get the screen width of device
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         try {
@@ -81,15 +86,20 @@ public class HistoricalActivity extends AppCompatActivity {
         }
         int width = size.x;
 
+        // Here lp will be used to change the width of our LinearLayout
         LinearLayout.LayoutParams lp;
 
+        // Next position record (mood) we change the Layout settings
         if(positionOfMood == 0){
+            // Changing the desired width according to the desired percentage
             width = width - (width*70/100);
+            // Set the color desired
             layout.setBackgroundColor(getResources().getColor(R.color.faded_red));
-            Log.e("width", String.valueOf(width));
+            // Applying the new parameters to our LinearLayout
             lp = new LinearLayout.LayoutParams(width,0);
             lp.weight =1;
             layout.setLayoutParams(lp);
+
         }else if(positionOfMood == 1){
             width = width - (width*60/100);
             layout.setBackgroundColor(getResources().getColor(R.color.warm_grey));
@@ -118,6 +128,5 @@ public class HistoricalActivity extends AppCompatActivity {
             layout.setLayoutParams(lp);
 
         }
-
     }
 }
