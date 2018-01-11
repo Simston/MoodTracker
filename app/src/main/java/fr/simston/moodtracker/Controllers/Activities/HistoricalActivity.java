@@ -115,6 +115,8 @@ public class HistoricalActivity extends AppCompatActivity {
             layout.setBackgroundColor(getResources().getColor(R.color.banana_yellow));
             lp = new LinearLayout.LayoutParams(width,0);
             lp.weight =1;
+            layout.setLayoutParams(lp);
+
         }
 
     }
