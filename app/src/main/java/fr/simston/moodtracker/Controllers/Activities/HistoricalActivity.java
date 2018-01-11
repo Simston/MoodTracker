@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import fr.simston.moodtracker.Models.MoodStock;
 import fr.simston.moodtracker.R;
@@ -30,6 +34,8 @@ public class HistoricalActivity extends AppCompatActivity {
     private LinearLayout layout7;
 
     private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7;
+
+    private ImageView img1, img2, img3, img4, img5, img6, img7;
 
     private int positionOfMood;
 
@@ -77,6 +83,14 @@ public class HistoricalActivity extends AppCompatActivity {
         tv6 = findViewById(R.id.tvLinear6);
         tv7 = findViewById(R.id.tvLinear7);
 
+        img1 = findViewById(R.id.imgLinear1);
+        img2 = findViewById(R.id.imgLinear2);
+        img3 = findViewById(R.id.imgLinear3);
+        img4 = findViewById(R.id.imgLinear4);
+        img5 = findViewById(R.id.imgLinear5);
+        img6 = findViewById(R.id.imgLinear6);
+        img7 = findViewById(R.id.imgLinear7);
+
         ArrayList<MoodStock> mMoodStockArrayList = MainActivity.mMoodStockArrayList;
 
         // Retrieving objects in the ArrayList<MoodStock>
@@ -85,34 +99,53 @@ public class HistoricalActivity extends AppCompatActivity {
             positionOfMood = moodStock.getPositionOfMood();
             dayOfMoodInArray = moodStock.getDay();
             monthOfMoodInArray = moodStock.getMonth();
+
             String forTv = calculForDaysDisplay(dayOfMoodInArray, monthOfMoodInArray);
+            String commentForTv = moodStock.getCommentMessage();
+
             if (i == 1) {
                 modifParamOfLinearLayout(layout1, positionOfMood);
+                ifCommentExist(commentForTv,img1);
+                Log.e("Comment"+1, commentForTv);
                 tv1.setText(forTv);
-                Log.e("forTv", forTv);
+
             } else if (i == 2) {
                 modifParamOfLinearLayout(layout2, positionOfMood);
-                tv2.setText(forTv);
+                ifCommentExist(commentForTv,img2);
+
+                tv2.setText(forTv);                Log.e("Comment"+i, commentForTv);
+
 
             } else if (i == 3) {
                 modifParamOfLinearLayout(layout3, positionOfMood);
-                tv3.setText(forTv);
+                ifCommentExist(commentForTv,img3);
+                tv3.setText(forTv);                Log.e("Comment"+i, commentForTv);
+
 
             } else if (i == 4) {
                 modifParamOfLinearLayout(layout4, positionOfMood);
-                tv4.setText(forTv);
+                ifCommentExist(commentForTv,img4);
+
+                tv4.setText(forTv);                Log.e("Comment"+i, commentForTv);
+
 
             } else if (i == 5) {
                 modifParamOfLinearLayout(layout5, positionOfMood);
-                tv5.setText(forTv);
+                ifCommentExist(commentForTv,img5);
+                tv5.setText(forTv);                Log.e("Comment"+i, commentForTv);
+
 
             } else if (i == 6) {
                 modifParamOfLinearLayout(layout6, positionOfMood);
-                tv6.setText(forTv);
+                ifCommentExist(commentForTv, img6);
+                tv6.setText(forTv);                Log.e("Comment"+i, commentForTv);
+
 
             } else if (i == 7) {
                 modifParamOfLinearLayout(layout7, positionOfMood);
-                tv7.setText(forTv);
+                ifCommentExist(commentForTv,img7);
+
+                tv7.setText(forTv);                Log.e("Comment"+i, commentForTv);
 
             }
             i++;
@@ -143,6 +176,19 @@ public class HistoricalActivity extends AppCompatActivity {
         return stringForTextView;
     }
 
+    private void ifCommentExist(final String comment, ImageView imgView){
+        // ImageView visible if comment in object exist
+        if(!Objects.equals(comment, "") && (!Objects.equals(comment, null))){
+            imgView.setVisibility(View.VISIBLE);
+            imgView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(HistoricalActivity.this,comment,Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
     /**
      * Method to change the appearance of LinearLayout according to stored moods
      *
@@ -163,6 +209,8 @@ public class HistoricalActivity extends AppCompatActivity {
 
         // Here lp will be used to change the width of our LinearLayout
         LinearLayout.LayoutParams lp;
+
+
 
         // Next position record (mood) we change the Layout settings
         if (positionOfMood == 0) {

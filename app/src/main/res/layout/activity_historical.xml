@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/historicalLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,14 +13,28 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tvLinear1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/imgLinear1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:paddingTop="5dp"
-            android:padding="5dp"/>
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/comment"
+            android:paddingEnd="20dp"
+            android:src="@drawable/ic_comment_black_48px"
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
@@ -28,14 +43,28 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tvLinear2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/imgLinear2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:paddingTop="5dp"
-            android:padding="5dp"/>
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/comment"
+            android:paddingEnd="20dp"
+            android:src="@drawable/ic_comment_black_48px"
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
@@ -43,15 +72,29 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tvLinear3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/imgLinear3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:paddingTop="5dp"
-            android:padding="5dp"/>
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/comment"
+            android:paddingEnd="20dp"
+            android:src="@drawable/ic_comment_black_48px"
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
@@ -59,15 +102,29 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tvLinear4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/imgLinear4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:paddingTop="5dp"
-            android:padding="5dp"/>
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/comment"
+            android:paddingEnd="20dp"
+            android:src="@drawable/ic_comment_black_48px"
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
@@ -75,15 +132,29 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tvLinear5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/imgLinear5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:paddingTop="5dp"
-            android:padding="5dp"/>
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/comment"
+            android:paddingEnd="20dp"
+            android:src="@drawable/ic_comment_black_48px"
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
@@ -91,15 +162,29 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tvLinear6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/imgLinear6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:paddingTop="5dp"
-            android:padding="5dp"/>
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/comment"
+            android:paddingEnd="20dp"
+            android:src="@drawable/ic_comment_black_48px"
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 
@@ -108,14 +193,28 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/tvLinear7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:ignore="NestedWeights" />
+
+        <ImageView
+            android:id="@+id/imgLinear7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:paddingTop="5dp"
-            android:padding="5dp"/>
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/comment"
+            android:paddingEnd="20dp"
+            android:src="@drawable/ic_comment_black_48px"
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:visibility="invisible"/>
     </LinearLayout>
 </LinearLayout>
