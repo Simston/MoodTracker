@@ -33,6 +33,9 @@ public class HistoricalActivity extends AppCompatActivity {
     private int currentDay;
     private int currentMonth;
 
+    private int dayOfMoodInArray;
+    private int monthOfMoodInArray;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,31 +69,66 @@ public class HistoricalActivity extends AppCompatActivity {
 
         ArrayList<MoodStock> mMoodStockArrayList = MainActivity.mMoodStockArrayList;
 
+        // Retrieving objects in the ArrayList<MoodStock>
         int i = 1;
         for (MoodStock moodStock: mMoodStockArrayList) {
             positionOfMood = moodStock.getPositionOfMood();
+            dayOfMoodInArray = moodStock.getDay();
+            monthOfMoodInArray = moodStock.getMonth();
+            String forTv = calculForDaysDisplay(dayOfMoodInArray, monthOfMoodInArray);
             if(i == 1){
                 modifParamOfLinearLayout(layout1, positionOfMood);
+                Log.e("forTv", forTv);
             }else if(i ==2){
                 modifParamOfLinearLayout(layout2,positionOfMood);
+                Log.e("forTv", forTv);
 
             }else if(i ==3){
                 modifParamOfLinearLayout(layout3,positionOfMood);
+                Log.e("forTv", forTv);
 
             }else if(i ==4){
                 modifParamOfLinearLayout(layout4,positionOfMood);
+                Log.e("forTv", forTv);
 
             }else if(i ==5){
                 modifParamOfLinearLayout(layout5,positionOfMood);
+                Log.e("forTv", forTv);
 
             }else if(i == 6){
                 modifParamOfLinearLayout(layout6,positionOfMood);
+                Log.e("forTv", forTv);
+
             }
             else if(i == 7){
                 modifParamOfLinearLayout(layout7,positionOfMood);
+                Log.e("forTv", forTv);
+
             }
             i++;
         }
+    }
+
+    private String calculForDaysDisplay(int dayOfMoodInArray, int monthOfMoodInArray){
+        String stringForTextView  ="";
+        int dayForMessage;
+
+        if(currentMonth == monthOfMoodInArray){
+            dayForMessage = currentDay - dayOfMoodInArray;
+
+            if(dayForMessage == 0){
+                stringForTextView = " aujourd'hui";
+            }else if(dayForMessage == 1){
+                stringForTextView = " hier";
+            }else if(dayForMessage == 2){
+                stringForTextView = " avant-hier";
+            }else if(dayForMessage == 7){
+                stringForTextView = " une semaine";
+            }
+        }else {
+            stringForTextView = " il y'as plus d'un mois";
+        }
+        return stringForTextView;
     }
 
     /**
