@@ -238,7 +238,18 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                 alertCommentAndSaveIt();
                 break;
             case R.id.imgBtnHistory:
+
+                // Creating Bundle object
+                Bundle bundle = new Bundle();
+                // Storing date into bundle
+                bundle.putInt("currentDay", currentDay);
+                bundle.putInt("currentMonth", currentMonth);
+
+                // Creating Intent object
                 Intent i = new Intent(MainActivity.this, HistoricalActivity.class);
+
+                // Storing bundle object into intent
+                i.putExtras(bundle);
                 this.startActivity(i);
                 break;
             default:

@@ -1,8 +1,10 @@
 package fr.simston.moodtracker.Controllers.Activities;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 import android.widget.LinearLayout;
 
@@ -28,11 +30,32 @@ public class HistoricalActivity extends AppCompatActivity {
 
     private int positionOfMood;
 
+    private int currentDay;
+    private int currentMonth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historical);
 
+
+
+        //get the Intent that started this Activity
+        Intent in = getIntent();
+
+        //get the Bundle that sotres the data of this Activity
+        Bundle bundle = in.getExtras();
+
+        // getting data from bundle
+        currentDay = bundle.getInt("currentDay");
+        currentMonth = bundle.getInt("currentMonth");
+
+        Log.e("current day", String.valueOf(currentDay));
+        // initialize all LinearLayout
+        initializeViews();
+    }
+
+    private void initializeViews(){
         layout1 = findViewById(R.id.linear1);
         layout2 = findViewById(R.id.linear2);
         layout3 = findViewById(R.id.linear3);
@@ -92,8 +115,10 @@ public class HistoricalActivity extends AppCompatActivity {
 
         // Next position record (mood) we change the Layout settings
         if(positionOfMood == 0){
+
             // Changing the desired width according to the desired percentage
             width = width - (width*70/100);
+
             // Set the color desired
             layout.setBackgroundColor(getResources().getColor(R.color.faded_red));
 
@@ -125,7 +150,6 @@ public class HistoricalActivity extends AppCompatActivity {
 
         }else if(positionOfMood == 4){
             layout.setBackgroundColor(getResources().getColor(R.color.banana_yellow));
-
             lp = new LinearLayout.LayoutParams(width,0);
             lp.weight =1;
             layout.setLayoutParams(lp);
