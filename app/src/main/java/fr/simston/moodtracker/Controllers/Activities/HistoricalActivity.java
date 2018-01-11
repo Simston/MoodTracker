@@ -113,6 +113,8 @@ public class HistoricalActivity extends AppCompatActivity {
 
         }else if(positionOfMood == 4){
             layout.setBackgroundColor(getResources().getColor(R.color.banana_yellow));
+            lp = new LinearLayout.LayoutParams(width,0);
+            lp.weight =1;
         }
 
     }

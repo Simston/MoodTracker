@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
 
     private void saveMoodOfDay(int position) {
         // Storing the new Mood if day is different of mood in storage
+
         if (dayOfLastKnownMoodDay != currentDay) {
             moodOfDay = new MoodStock(currentDay, currentMonth, position, date, commentMessage);
 
@@ -212,10 +213,11 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                 dayOfLastKnownMoodDay + " month " + monthOfLastKnownMoodDay + " position pager " + lastKnownPosition +
                 " Comment " + commentMessage));
 
-        //if a new Day position of ViewPager is 0 and change the day of variable dayOfLastKnownMoodDay.
+        //if a new Day initialize and save it.
         if (dayOfLastKnownMoodDay != currentDay) {
+            saveMoodOfDay(0);
             dayOfLastKnownMoodDay = currentDay;
-            this.lastKnownPosition = 0;
+
         }
 
         // Loop for read all object in ArrayList mMoodStockArrayList
