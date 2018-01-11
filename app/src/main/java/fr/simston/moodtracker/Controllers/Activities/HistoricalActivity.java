@@ -42,6 +42,7 @@ public class HistoricalActivity extends AppCompatActivity {
         layout7 = findViewById(R.id.linear7);
 
         ArrayList<MoodStock> mMoodStockArrayList = MainActivity.mMoodStockArrayList;
+
         int i = 1;
         for (MoodStock moodStock: mMoodStockArrayList) {
             positionOfMood = moodStock.getPositionOfMood();
@@ -95,6 +96,7 @@ public class HistoricalActivity extends AppCompatActivity {
             width = width - (width*70/100);
             // Set the color desired
             layout.setBackgroundColor(getResources().getColor(R.color.faded_red));
+
             // Applying the new parameters to our LinearLayout
             lp = new LinearLayout.LayoutParams(width,0);
             lp.weight =1;
@@ -123,6 +125,7 @@ public class HistoricalActivity extends AppCompatActivity {
 
         }else if(positionOfMood == 4){
             layout.setBackgroundColor(getResources().getColor(R.color.banana_yellow));
+
             lp = new LinearLayout.LayoutParams(width,0);
             lp.weight =1;
             layout.setLayoutParams(lp);

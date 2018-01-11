@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.setTime(date);
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        currentDay = currentDay+1;
         currentMonth = calendar.get(Calendar.MONTH);
         currentMonth = currentMonth + 1;
         Log.e("Current date", String.valueOf(date));
