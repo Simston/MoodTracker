@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                         break;
                     case 2:
                         stopSound(lastKnownPosition);
-
                         playSound(position);
                         lastKnownPosition = position;
                         break;
@@ -140,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                         stopSound(lastKnownPosition);
                         playSound(position);
                         lastKnownPosition = position;
-                        Log.e("TABLEAU", "My tab" + mMoodStockArrayList);
                         break;
                 }
             }
@@ -338,24 +336,26 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
      * @param position int of ViewPager
      */
     private void stopSound(int position){
-        switch (position){
-            case 0:
-                bankSound[position].stop();
-                break;
-            case 1:
-                bankSound[position].stop();
-                break;
-            case 2:
-                bankSound[position].stop();
-                break;
-            case 3:
-                bankSound[position].stop();
-                break;
-            case 4:
-                bankSound[position].stop();
-                break;
-            default:
-                break;
+        if(bankSound != null){
+            switch (position){
+                case 0:
+                    bankSound[position].stop();
+                    break;
+                case 1:
+                    bankSound[position].stop();
+                    break;
+                case 2:
+                    bankSound[position].stop();
+                    break;
+                case 3:
+                    bankSound[position].stop();
+                    break;
+                case 4:
+                    bankSound[position].stop();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
