@@ -62,7 +62,10 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.setTime(date);
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        currentDay = currentDay+1;
+        // delete this for real version
+        currentDay = currentDay+9;
+
+        Log.e("current day", String.valueOf(currentDay));
         currentMonth = calendar.get(Calendar.MONTH);
         currentMonth = currentMonth + 1;
         Log.e("Current date", String.valueOf(date));
@@ -139,13 +142,13 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
     }
 
     private void saveMoodOfDay(int position) {
+
         // Storing the new Mood if day is different of mood in storage
-
         if (dayOfLastKnownMoodDay != currentDay) {
-            moodOfDay = new MoodStock(currentDay, currentMonth, position, date, commentMessage);
-
-            // Replace dayOfLastKnowMoodDay by new current Day
+            moodOfDay = new MoodStock(currentDay, currentMonth, position, date, "");
+            // Replace dayOfLastKnowMoodDay by new current Day and lastKnownPosition for new Object
             dayOfLastKnownMoodDay = currentDay;
+            lastKnownPosition = position;
 
             // Storing the mood of the day in arraylist for 7 last mood storage.
             if (mMoodStockArrayList.size() - 1 == 6) {
@@ -159,8 +162,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             moodOfDay.setPositionOfMood(position);
             moodOfDay.setDate(date);
         }
-        Log.e("Test", String.valueOf(position));
-        Log.e("Object", String.valueOf(moodOfDay));
 
         // Save the new object Json in SharedPreferences
         SharedPreferences.Editor editor = preferences.edit();
@@ -186,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             saveMoodOfDay(0);
         }
 
-
         compareLastKnownMoodDayWithCurrentMood();
 
     }
@@ -210,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         if (dayOfLastKnownMoodDay == currentDay && monthOfLastKnownMoodDay == currentMonth) {
             this.moodOfDay = lastKnownMoodDay;
         }
+
         Log.e("Info Last Mood", String.valueOf("La date est " + dateOfLastKnownMoodDay + " jour " +
                 dayOfLastKnownMoodDay + " month " + monthOfLastKnownMoodDay + " position pager " + lastKnownPosition +
                 " Comment " + commentMessage));
@@ -217,8 +218,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         //if a new Day initialize and save it.
         if (dayOfLastKnownMoodDay != currentDay) {
             saveMoodOfDay(0);
-            dayOfLastKnownMoodDay = currentDay;
-
         }
 
         // Loop for read all object in ArrayList mMoodStockArrayList
@@ -226,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             Log.e("Object In Array", String.valueOf(object));
             Log.e("Position Pager", String.valueOf(object.getPositionOfMood()));
             Log.e("Day", String.valueOf(object.getDay()));
-
 
         }
     }
