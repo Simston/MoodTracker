@@ -3,6 +3,7 @@ package fr.simston.moodtracker.Controllers.Activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
     private int currentMonth;
     private String commentMessage;
 
+    private MediaPlayer[] bankSound;
+
     public static ArrayList<MoodStock> mMoodStockArrayList;
 
     @Override
@@ -62,11 +65,11 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.setTime(date);
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        // delete this for real version
-        currentDay = currentDay + 14;
+        // delete or use this for test with another day
+        currentDay = currentDay +12;
 
         currentMonth = calendar.get(Calendar.MONTH);
-        currentMonth = currentMonth + 1;
+        currentMonth = currentMonth + 2;
 
         // Instance of SharedPreferences
         preferences = this.getSharedPreferences("shared preferences", MODE_PRIVATE);
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         pager.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             // Add action on ViewPager when page is selected
@@ -110,23 +114,32 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                 // Save position of ViewPager
                 switch (position) {
                     case 0:
+                        // Stop old sound when change page
+                        stopSound(lastKnownPosition);
+                        // Start new sound for this Mood
+                        playSound(position);
                         lastKnownPosition = position;
                         break;
                     case 1:
+                        stopSound(lastKnownPosition);
+                        playSound(position);
                         lastKnownPosition = position;
-
                         break;
                     case 2:
-                        lastKnownPosition = position;
+                        stopSound(lastKnownPosition);
 
+                        playSound(position);
+                        lastKnownPosition = position;
                         break;
                     case 3:
+                        stopSound(lastKnownPosition);
+                        playSound(position);
                         lastKnownPosition = position;
-
                         break;
                     case 4:
+                        stopSound(lastKnownPosition);
+                        playSound(position);
                         lastKnownPosition = position;
-
                         Log.e("TABLEAU", "My tab" + mMoodStockArrayList);
                         break;
                 }
@@ -139,8 +152,12 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         });
     }
 
+    /**
+     * Method to save a new mood or change if it's the same day
+     * @param position of ViewPager
+     */
     private void saveMoodOfDay(int position) {
-
+        Log.e("POSITION DE MOOD", String.valueOf(position));
         // Storing the new Mood if day is different of mood in storage
         if (dayOfLastKnownMoodDay != currentDay) {
             moodOfDay = new MoodStock(currentDay, currentMonth, position, date, "");
@@ -157,8 +174,10 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             }
             // If same day just update the position and date
         } else {
-            moodOfDay.setPositionOfMood(position);
-            moodOfDay.setDate(date);
+
+            this.moodOfDay.setPositionOfMood(position);
+            this.lastKnownPosition = position;
+            this.moodOfDay.setDate(date);
         }
 
         // Save the new object Json in SharedPreferences
@@ -180,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
 
         // Initialize a first object and create an empty ArrayList if doesn't exist
         if (mMoodStockArrayList == null) {
-            //moodOfDay = new MoodStock(currentDay, currentMonth, 0, date, commentMessage);
             mMoodStockArrayList = new ArrayList<>();
             saveMoodOfDay(3);
         }
@@ -220,12 +238,13 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         }
 
         // Loop for read all object in ArrayList mMoodStockArrayList
+        /*
         for (MoodStock object : mMoodStockArrayList) {
             Log.e("Object In Array", String.valueOf(object));
             Log.e("Position Pager", String.valueOf(object.getPositionOfMood()));
             Log.e("Day", String.valueOf(object.getDay()));
 
-        }
+        }*/
     }
 
     @Override
@@ -279,6 +298,65 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                         moodOfDay.setCommentMessage(commentMessage);
                     }
                 }).create().show();
+    }
+
+    /**
+     * Method of playing a sound when the viewpager changes position
+     * @param position int of ViewPager
+     */
+    private void playSound(int position){
+        // Create an Array with different sounds
+        bankSound = new MediaPlayer[]{
+                MediaPlayer.create(this, R.raw.verry_sad),
+                MediaPlayer.create(this, R.raw.sad),
+                MediaPlayer.create(this, R.raw.normal),
+                MediaPlayer.create(this, R.raw.happy),
+                MediaPlayer.create(this, R.raw.super_happy)
+        };
+        switch (position){
+            case 0:
+                bankSound[position].start();
+                break;
+            case 1:
+                bankSound[position].start();
+                break;
+            case 2:
+                bankSound[position].start();
+                break;
+            case 3:
+                bankSound[position].start();
+                break;
+            case 4:
+                bankSound[position].start();
+                break;
+            default:
+                break;
+        }
+    }
+    /**
+     * Method of stop a old sound when the viewpager changes position
+     * @param position int of ViewPager
+     */
+    private void stopSound(int position){
+        switch (position){
+            case 0:
+                bankSound[position].stop();
+                break;
+            case 1:
+                bankSound[position].stop();
+                break;
+            case 2:
+                bankSound[position].stop();
+                break;
+            case 3:
+                bankSound[position].stop();
+                break;
+            case 4:
+                bankSound[position].stop();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
