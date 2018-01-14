@@ -65,10 +65,8 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         // delete this for real version
         currentDay = currentDay + 9;
 
-        Log.e("current day", String.valueOf(currentDay));
         currentMonth = calendar.get(Calendar.MONTH);
         currentMonth = currentMonth + 1;
-        Log.e("Current date", String.valueOf(date));
 
         // Instance of SharedPreferences
         preferences = this.getSharedPreferences("shared preferences", MODE_PRIVATE);
@@ -184,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         if (mMoodStockArrayList == null) {
             //moodOfDay = new MoodStock(currentDay, currentMonth, 0, date, commentMessage);
             mMoodStockArrayList = new ArrayList<>();
-            saveMoodOfDay(0);
+            saveMoodOfDay(3);
         }
 
         compareLastKnownMoodDayWithCurrentMood();
