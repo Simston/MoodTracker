@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         calendar.setTime(date);
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         // delete this for real version
-        currentDay = currentDay + 9;
+        currentDay = currentDay + 14;
 
         currentMonth = calendar.get(Calendar.MONTH);
         currentMonth = currentMonth + 1;
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
 
         //if a new Day initialize and save it.
         if (dayOfLastKnownMoodDay != currentDay) {
-            saveMoodOfDay(0);
+            saveMoodOfDay(3);
         }
 
         // Loop for read all object in ArrayList mMoodStockArrayList
