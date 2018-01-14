@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         calendar.setTime(date);
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         // delete this for real version
-        currentDay = currentDay+9;
+        currentDay = currentDay + 9;
 
         Log.e("current day", String.valueOf(currentDay));
         currentMonth = calendar.get(Calendar.MONTH);
@@ -211,9 +211,10 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             this.moodOfDay = lastKnownMoodDay;
         }
 
+        /*
         Log.e("Info Last Mood", String.valueOf("La date est " + dateOfLastKnownMoodDay + " jour " +
                 dayOfLastKnownMoodDay + " month " + monthOfLastKnownMoodDay + " position pager " + lastKnownPosition +
-                " Comment " + commentMessage));
+                " Comment " + commentMessage));*/
 
         //if a new Day initialize and save it.
         if (dayOfLastKnownMoodDay != currentDay) {
@@ -291,7 +292,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e("On Stop", "On Stop");
         saveMoodOfDay(lastKnownPosition);
     }
 
@@ -310,25 +310,5 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
     protected void onDestroy() {
         super.onDestroy();
 
-    }
-
-    public static Date getEndOfDay(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-        calendar.set(Calendar.MILLISECOND, 999);
-        return calendar.getTime();
-    }
-
-    public static Date getStartOfDay(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
     }
 }
