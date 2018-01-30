@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,7 +49,6 @@ public class HistoricalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historical);
 
-
         //get the Intent that started this Activity
         Intent in = getIntent();
 
@@ -61,11 +59,13 @@ public class HistoricalActivity extends AppCompatActivity {
         currentDay = bundle.getInt("currentDay");
         currentMonth = bundle.getInt("currentMonth");
 
-        Log.e("current day", String.valueOf(currentDay));
         // initialize all LinearLayout
         initializeViews();
     }
 
+    /**
+     * Method to initialize the display of the history according to moods in recorded
+     */
     private void initializeViews() {
         layout1 = findViewById(R.id.linear1);
         layout2 = findViewById(R.id.linear2);
@@ -105,53 +105,50 @@ public class HistoricalActivity extends AppCompatActivity {
 
             if (i == 1) {
                 modifParamOfLinearLayout(layout1, positionOfMood);
-                ifCommentExist(commentForTv,img1);
-                Log.e("Comment"+1, commentForTv);
+                ifCommentExist(commentForTv, img1);
                 tv1.setText(forTv);
 
             } else if (i == 2) {
                 modifParamOfLinearLayout(layout2, positionOfMood);
-                ifCommentExist(commentForTv,img2);
-
-                tv2.setText(forTv);                Log.e("Comment"+i, commentForTv);
-
+                ifCommentExist(commentForTv, img2);
+                tv2.setText(forTv);
 
             } else if (i == 3) {
                 modifParamOfLinearLayout(layout3, positionOfMood);
-                ifCommentExist(commentForTv,img3);
-                tv3.setText(forTv);                Log.e("Comment"+i, commentForTv);
-
+                ifCommentExist(commentForTv, img3);
+                tv3.setText(forTv);
 
             } else if (i == 4) {
                 modifParamOfLinearLayout(layout4, positionOfMood);
-                ifCommentExist(commentForTv,img4);
-
-                tv4.setText(forTv);                Log.e("Comment"+i, commentForTv);
-
+                ifCommentExist(commentForTv, img4);
+                tv4.setText(forTv);
 
             } else if (i == 5) {
                 modifParamOfLinearLayout(layout5, positionOfMood);
-                ifCommentExist(commentForTv,img5);
-                tv5.setText(forTv);                Log.e("Comment"+i, commentForTv);
-
+                ifCommentExist(commentForTv, img5);
+                tv5.setText(forTv);
 
             } else if (i == 6) {
                 modifParamOfLinearLayout(layout6, positionOfMood);
                 ifCommentExist(commentForTv, img6);
-                tv6.setText(forTv);                Log.e("Comment"+i, commentForTv);
-
+                tv6.setText(forTv);
 
             } else if (i == 7) {
                 modifParamOfLinearLayout(layout7, positionOfMood);
-                ifCommentExist(commentForTv,img7);
-
-                tv7.setText(forTv);                Log.e("Comment"+i, commentForTv);
-
+                ifCommentExist(commentForTv, img7);
+                tv7.setText(forTv);
             }
             i++;
         }
     }
 
+    /**
+     * Method that returns a string following the mood date
+     *
+     * @param dayOfMoodInArray   int
+     * @param monthOfMoodInArray int
+     * @return String for TextView
+     */
     private String calculForDaysDisplay(int dayOfMoodInArray, int monthOfMoodInArray) {
         String stringForTextView;
         int dayForMessage;
@@ -176,14 +173,20 @@ public class HistoricalActivity extends AppCompatActivity {
         return stringForTextView;
     }
 
-    private void ifCommentExist(final String comment, ImageView imgView){
+    /**
+     * Method that displays or not the comment if exist
+     *
+     * @param comment Comment in array
+     * @param imgView ImageView Display
+     */
+    private void ifCommentExist(final String comment, ImageView imgView) {
         // ImageView visible if comment in object exist
-        if(!Objects.equals(comment, "") && (!Objects.equals(comment, null))){
+        if (!Objects.equals(comment, "") && (!Objects.equals(comment, null))) {
             imgView.setVisibility(View.VISIBLE);
             imgView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(HistoricalActivity.this,comment,Toast.LENGTH_LONG).show();
+                    Toast.makeText(HistoricalActivity.this, comment, Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -209,8 +212,6 @@ public class HistoricalActivity extends AppCompatActivity {
 
         // Here lp will be used to change the width of our LinearLayout
         LinearLayout.LayoutParams lp;
-
-
 
         // Next position record (mood) we change the Layout settings
         if (positionOfMood == 0) {
