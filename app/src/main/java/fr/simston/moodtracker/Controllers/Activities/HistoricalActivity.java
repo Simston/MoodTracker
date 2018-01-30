@@ -44,6 +44,8 @@ public class HistoricalActivity extends AppCompatActivity {
     private int dayOfMoodInArray;
     private int monthOfMoodInArray;
 
+    public  int dayForMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +98,7 @@ public class HistoricalActivity extends AppCompatActivity {
         // Retrieving objects in the ArrayList<MoodStock>
         int i = 1;
         for (MoodStock moodStock : mMoodStockArrayList) {
+
             positionOfMood = moodStock.getPositionOfMood();
             dayOfMoodInArray = moodStock.getDay();
             monthOfMoodInArray = moodStock.getMonth();
@@ -144,18 +147,15 @@ public class HistoricalActivity extends AppCompatActivity {
 
     /**
      * Method that returns a string following the mood date
-     *
      * @param dayOfMoodInArray   int
      * @param monthOfMoodInArray int
      * @return String for TextView
      */
     private String calculForDaysDisplay(int dayOfMoodInArray, int monthOfMoodInArray) {
         String stringForTextView;
-        int dayForMessage;
 
         if (currentMonth == monthOfMoodInArray) {
             dayForMessage = currentDay - dayOfMoodInArray;
-
             if (dayForMessage == 0) {
                 stringForTextView = "Aujourd'hui";
             } else if (dayForMessage == 1) {
@@ -168,7 +168,7 @@ public class HistoricalActivity extends AppCompatActivity {
                 stringForTextView = "Il y a " + dayForMessage + " jours";
             }
         } else {
-            stringForTextView = "Il y'as plus d'un mois";
+            stringForTextView = "Le mois dernier";
         }
         return stringForTextView;
     }
