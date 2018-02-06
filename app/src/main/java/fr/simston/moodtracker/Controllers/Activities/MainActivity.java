@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
     private MediaPlayer[] bankSound;
 
     public static ArrayList<MoodStock> mMoodStockArrayList;
+    public static  int finalDayForCalcul;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +68,10 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         calendar.setTime(date);
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         // delete or use this for test with another day
-        //currentDay = currentDay +12;
+        //currentDay = currentDay +1;
 
         currentMonth = calendar.get(Calendar.MONTH);
-        currentMonth = currentMonth + 1;
+        currentMonth = currentMonth +1;
 
         // Instance of SharedPreferences
         preferences = this.getSharedPreferences("shared preferences", MODE_PRIVATE);
@@ -174,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             }
             // If same day just update the position and date
         } else {
-
             this.moodOfDay.setPositionOfMood(position);
             this.lastKnownPosition = position;
             this.moodOfDay.setDate(date);
@@ -212,8 +212,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
      */
     private void compareLastKnownMoodDayWithCurrentMood() {
 
-        int finalDayForCalcul;
-
         // Recover the last object in ArrayList mMoodStockArrayList
         if (mMoodStockArrayList != null && !mMoodStockArrayList.isEmpty()) {
             this.lastKnownMoodDay = mMoodStockArrayList.get(mMoodStockArrayList.size() - 1);
@@ -237,28 +235,33 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
 
         //if a new Day or new Month initialize and save it
         if (dayOfLastKnownMoodDay != currentDay) {
-            saveMoodOfDay(3);
-        }else if (monthOfLastKnownMoodDay != currentMonth){
-            saveMoodOfDay(3);
-        }
-
-        // Delete Mood if > 7 days
-        ListIterator<MoodStock> iter = mMoodStockArrayList.listIterator();
-        while(iter.hasNext()){
-            if(currentDay - iter.next().getDay() > 7){
-                iter.remove();
-            }else if(currentMonth != monthOfLastKnownMoodDay){
-
-                // Calculation of days following the current month and last month
-                int endDayOfMonth = calendar.getActualMaximum(monthOfLastKnownMoodDay);
-                int dayForCalcul = dayOfLastKnownMoodDay - endDayOfMonth;
-
-                finalDayForCalcul =  dayForCalcul + currentDay;
-                if(finalDayForCalcul > 7){
+            // Delete Mood if > 7 days
+            ListIterator<MoodStock> iter = mMoodStockArrayList.listIterator();
+            while(iter.hasNext()){
+                if(currentDay - iter.next().getDay() > 7){
                     iter.remove();
                 }
             }
+            saveMoodOfDay(3);
+        }else if (monthOfLastKnownMoodDay != currentMonth){
+            ListIterator<MoodStock> iter = mMoodStockArrayList.listIterator();
+            while(iter.hasNext()) {
+                int dayMood = iter.next().getDay();
+                int endDayOfMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+                int dayForCalcul = endDayOfMonth - dayMood;
+                finalDayForCalcul = dayForCalcul + currentDay;
+                if (finalDayForCalcul > 7) {
+                    iter.remove();
+                }
+            }
+            saveMoodOfDay(3);
         }
+
+        // Calculation of days following the current month and last month
+        Calendar calForCalcul = Calendar.getInstance();
+        calForCalcul.set(Calendar.MONTH, monthOfLastKnownMoodDay);
+
+
     }
 
     @Override
