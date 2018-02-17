@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         calendar.setTime(date);
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         // delete or use this for test with another day
-        // currentDay = currentDay +4;
+        //currentDay = currentDay +30;
 
         currentMonth = calendar.get(Calendar.MONTH);
         currentMonth = currentMonth +1;
