@@ -58,10 +58,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // init information TimeZone of device
-        TimeZone tz = TimeZone.getDefault();
-        // System.out.println("TimeZone   " + tz.getDisplayName(false, TimeZone.SHORT) + " Timezon id :: " + tz.getID());
-
         // init current date
         date = Calendar.getInstance().getTime();
         calendar = Calendar.getInstance(TimeZone.getDefault());
@@ -228,11 +224,6 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             this.moodOfDay = lastKnownMoodDay;
         }
 
-        /*
-        Log.e("Info Last Mood", String.valueOf("La date est " + dateOfLastKnownMoodDay + " jour " +
-                dayOfLastKnownMoodDay + " month " + monthOfLastKnownMoodDay + " position pager " + lastKnownPosition +
-                " Comment " + commentMessage));*/
-
         //if a new Day or new Month initialize and save it
         if (dayOfLastKnownMoodDay != currentDay) {
             // Delete Mood if > 7 days
@@ -244,11 +235,15 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
             }
             saveMoodOfDay(3);
 
+            // if a new month initialize and saver it
         }else if (monthOfLastKnownMoodDay != currentMonth){
+
+            // Delete Mood if > 7 days
             ListIterator<MoodStock> iter = mMoodStockArrayList.listIterator();
             while(iter.hasNext()) {
                 int dayMood = iter.next().getDay();
 
+                // Recover max day of last month in data
                 int endDayOfMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
 
                 int dayForCalcul = endDayOfMonth - dayMood;
