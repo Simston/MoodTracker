@@ -17,8 +17,6 @@ import java.util.Objects;
 import fr.simston.moodtracker.Models.MoodStock;
 import fr.simston.moodtracker.R;
 
-import static fr.simston.moodtracker.Controllers.Activities.MainActivity.finalDayForCalcul;
-
 /**
  * Created by St&eacute;phane Simon on 10/01/2018.
  *
@@ -170,7 +168,7 @@ public class HistoricalActivity extends AppCompatActivity {
                 stringForTextView = "Il y a " + dayForMessage + " jours";
             }
         } else {
-            stringForTextView = String.valueOf(finalDayForCalcul);
+            stringForTextView = "Le mois dernier";
         }
         return stringForTextView;
     }

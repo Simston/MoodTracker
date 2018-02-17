@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
         calendar.setTime(date);
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         // delete or use this for test with another day
-        //currentDay = currentDay +1;
+        // currentDay = currentDay +4;
 
         currentMonth = calendar.get(Calendar.MONTH);
         currentMonth = currentMonth +1;
@@ -243,11 +243,14 @@ public class MainActivity extends AppCompatActivity implements PageFragment.OnBu
                 }
             }
             saveMoodOfDay(3);
+
         }else if (monthOfLastKnownMoodDay != currentMonth){
             ListIterator<MoodStock> iter = mMoodStockArrayList.listIterator();
             while(iter.hasNext()) {
                 int dayMood = iter.next().getDay();
+
                 int endDayOfMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+
                 int dayForCalcul = endDayOfMonth - dayMood;
                 finalDayForCalcul = dayForCalcul + currentDay;
                 if (finalDayForCalcul > 7) {

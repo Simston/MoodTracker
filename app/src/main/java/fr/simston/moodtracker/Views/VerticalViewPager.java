@@ -1,8 +1,18 @@
 package fr.simston.moodtracker.Views;
-/**
- * Created by St&eacute;phane Simon on 03/01/2018.
+/*
+ * Copyright (C) 2014 The Android Open Source Project
  *
- * @version 1.0
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import android.content.Context;
@@ -23,24 +33,33 @@ public class VerticalViewPager extends ViewPager {
         init();
     }
 
+    /**
+     * @return {@code false} since a vertical view pager can never be scrolled horizontally
+     */
     @Override
     public boolean canScrollHorizontally(int direction) {
         return false;
     }
 
+    /**
+     * @return {@code true} iff a normal view pager would support horizontal scrolling at this time
+     */
     @Override
     public boolean canScrollVertically(int direction) {
         return super.canScrollHorizontally(direction);
     }
 
     private void init() {
+        // Make page transit vertical
         setPageTransformer(true, new VerticalPageTransformer());
+        // Get rid of the overscroll drawing that happens on the left and right (the ripple)
         setOverScrollMode(View.OVER_SCROLL_NEVER);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final boolean toIntercept = super.onInterceptTouchEvent(flipXY(ev));
+        // Return MotionEvent to normal
         flipXY(ev);
         return toIntercept;
     }
@@ -48,6 +67,7 @@ public class VerticalViewPager extends ViewPager {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         final boolean toHandle = super.onTouchEvent(flipXY(ev));
+        // Return MotionEvent to normal
         flipXY(ev);
         return toHandle;
     }
@@ -68,9 +88,11 @@ public class VerticalViewPager extends ViewPager {
             final int pageWidth = view.getWidth();
             final int pageHeight = view.getHeight();
             if (position < -1) {
+                // This page is way off-screen to the left.
                 view.setAlpha(0);
             } else if (position <= 1) {
                 view.setAlpha(1);
+                // Counteract the default slide transition
                 view.setTranslationX(pageWidth * -position);
 
                 /*Test for animation transition
@@ -80,9 +102,11 @@ public class VerticalViewPager extends ViewPager {
                 view.setScaleX(scaleFactor);
                 view.setScaleY(scaleFactor); */
 
+                // set Y position to swipe in from top
                 float yPosition = position * pageHeight;
                 view.setTranslationY(yPosition);
             } else {
+                // This page is way off-screen to the right.
                 view.setAlpha(0);
             }
         }
